@@ -1,15 +1,16 @@
 import { type Metadata } from 'next'
+import getConfig from 'next/config'
 
 import '@/styles/tailwind.css'
 
+const { publicRuntimeConfig: c } = getConfig()
+
 export const metadata: Metadata = {
   title: {
-    template: '%s - Their Side',
-    default:
-      'Their Side - Conversations with the most tragically misunderstood people of our time',
+    template: `%s - ${c.title}`,
+    default: `${c.title} - ${c.tagline}`,
   },
-  description:
-    'Conversations with the most tragically misunderstood people of our time.',
+  description: c.description,
 }
 
 export default function RootLayout({
