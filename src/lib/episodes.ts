@@ -33,7 +33,7 @@ export async function getAllEpisodes() {
   })
 
   let feed = (await parseFeed(
-    'http://localhost:3000/api/feed',
+    `${process.env.NEXT_PUBLIC_URL}/api/feed`,
   )) as unknown
   let items = parse(FeedSchema, feed).items
 
