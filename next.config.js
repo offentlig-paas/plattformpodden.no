@@ -10,6 +10,7 @@ const nextConfig = {
     ],
     providerUrls: {
       'RSS Feed': 'https://feeds.transistor.fm/plattformpodden',
+      'Spotify': 'https://open.spotify.com/show/10Cgw1ewV6QSQiH6JLNrQ5',
     },
   },
 }
