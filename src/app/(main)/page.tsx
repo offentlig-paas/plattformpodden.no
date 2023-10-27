@@ -55,13 +55,13 @@ function EpisodeEntry({ episode }: { episode: Episode }) {
               playing={
                 <>
                   <PauseIcon className="h-2.5 w-2.5 fill-current" />
-                  <span aria-hidden="true">Listen</span>
+                  <span aria-hidden="true">Lytt</span>
                 </>
               }
               paused={
                 <>
                   <PlayIcon className="h-2.5 w-2.5 fill-current" />
-                  <span aria-hidden="true">Listen</span>
+                  <span aria-hidden="true">Lytt</span>
                 </>
               }
             />
@@ -74,9 +74,9 @@ function EpisodeEntry({ episode }: { episode: Episode }) {
             <Link
               href={`/${episode.id}`}
               className="flex items-center text-sm font-bold leading-6 text-pink-500 hover:text-pink-700 active:text-pink-900"
-              aria-label={`Show notes for episode ${episode.title}`}
+              aria-label={`Vis notater for episode ${episode.title}`}
             >
-              Show notes
+              Vis notater
             </Link>
           </div>
         </div>

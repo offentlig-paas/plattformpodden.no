@@ -15,37 +15,40 @@ export interface Episode {
 }
 
 export async function getAllEpisodes() {
-  //let FeedSchema = object({
-  //  items: array(
-  //    object({
-  //      id: number(),
-  //      title: string(),
-  //      published: number(),
-  //      description: string(),
-  //      content: string(),
-  //      enclosures: array(
-  //        object({
-  //          url: string(),
-  //          type: string(),
-  //        }),
-  //      ),
-  //    }),
-  //  ),
-  //})
+  let FeedSchema = object({
+    items: array(
+      object({
+        itunes_episode: number(),
+        title: string(),
+        published: number(),
+        description: string(),
+        content: string(),
+        enclosures: array(
+          object({
+            url: string(),
+            type: string(),
+          }),
+        ),
+      }),
+    ),
+  })
 
-  //let feed = (await parseFeed(
-  //  `${process.env.NEXT_PUBLIC_URL}/api/feed`,
-  //)) as unknown
-  //let items = parse(FeedSchema, feed).items
+  let feed = (await parseFeed(
+    "https://feeds.transistor.fm/plattformpodden"
+  )) as unknown
+  let items = parse(FeedSchema, feed).items
 
   let episodes: Array<Episode> = items.map(
-    ({ id, title, description, content, audio, published }) => ({
+    ({ itunes_episode: id, title, description, content, enclosures, published }) => ({
       id,
       title: `${id}: ${title}`,
       published: new Date(published),
-      description,
+      description: description.replace(/(<([^>]+)>)/gi, ""), // Remove HTML tags
       content,
-      audio: audio,
+      audio: enclosures.map((enclosure) => ({
+        src: enclosure.url,
+        type: enclosure.type,
+      }))[0],
     }),
   )
 
