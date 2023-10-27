@@ -133,7 +133,7 @@ export default function MainLayout({
               ).map(([label, Icon]) => (
                 <li key={label} className="flex">
                   <Link
-                    href="/"
+                    href={c.providerUrls[label] ?? '#'}
                     className="group flex items-center"
                     aria-label={label}
                   >

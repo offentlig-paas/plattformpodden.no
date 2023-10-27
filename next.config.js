@@ -7,7 +7,10 @@ const nextConfig = {
     hosts: [
       'Audun Fauchald Strand',
       'Hans Kristian Flaatten',
-    ]
+    ],
+    providerUrls: {
+      'RSS Feed': 'https://feeds.transistor.fm/plattformpodden',
+    },
   },
 }
 
