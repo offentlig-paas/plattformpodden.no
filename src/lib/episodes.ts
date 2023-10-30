@@ -4,6 +4,7 @@ import { episodes as items } from '../data/episodes'
 
 export interface Episode {
   id: number
+  type: string
   title: string
   published: Date
   description: string
@@ -19,6 +20,7 @@ export async function getAllEpisodes() {
     items: array(
       object({
         itunes_episode: number(),
+        itunes_episodeType: string(),
         title: string(),
         published: number(),
         description: string(),
@@ -39,8 +41,9 @@ export async function getAllEpisodes() {
   let items = parse(FeedSchema, feed).items
 
   let episodes: Array<Episode> = items.map(
-    ({ itunes_episode: id, title, description, content, enclosures, published }) => ({
+    ({ itunes_episode: id, itunes_episodeType: type, title, description, content, enclosures, published }) => ({
       id,
+      type,
       title: `${id}: ${title}`,
       published: new Date(published),
       description: description.replace(/(<([^>]+)>)/gi, ""), // Remove HTML tags

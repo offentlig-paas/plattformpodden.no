@@ -39,7 +39,14 @@ function EpisodeEntry({ episode }: { episode: Episode }) {
             id={`episode-${episode.id}-title`}
             className="mt-2 text-lg font-bold text-slate-900"
           >
-            <Link href={`/${episode.id}`}>{episode.title}</Link>
+            <Link href={`/episode/${episode.id}`}>
+              {episode.title}
+              {episode.type && (
+                <span className="mx-2 rounded-sm bg-gray-500 px-2 py-0.5 text-xs font-medium text-gray-50">
+                  {episode.type.toUpperCase()}
+                </span>
+              )}
+            </Link>
           </h2>
           <FormattedDate
             date={date}
