@@ -39,19 +39,16 @@ function EpisodeEntry({ episode }: { episode: Episode }) {
             id={`episode-${episode.id}-title`}
             className="mt-2 text-lg font-bold text-slate-900"
           >
-            <Link href={`/episode/${episode.id}`}>
-              {episode.title}
-              {episode.type === 'trailer' && (
-                <span className="mx-2 rounded-sm bg-gray-500 px-2 py-0.5 text-xs font-medium text-gray-50">
-                  {episode.type.toUpperCase()}
-                </span>
-              )}
-            </Link>
+            <Link href={`/episode/${episode.id}`}>{episode.title}</Link>
           </h2>
-          <FormattedDate
-            date={date}
-            className="order-first font-mono text-sm leading-7 text-slate-500"
-          />
+          <div className="order-first flex items-center gap-x-4 font-mono text-sm">
+            <FormattedDate date={date} className="leading-7 text-slate-500" />
+            {episode.type === 'trailer' && (
+              <span className="relative z-10 rounded-sm bg-gray-500 px-2 py-0.5 text-xs font-medium text-gray-50">
+                TRAILER
+              </span>
+            )}
+          </div>
           <p className="mt-1 text-base leading-7 text-slate-700">
             {episode.description}
           </p>

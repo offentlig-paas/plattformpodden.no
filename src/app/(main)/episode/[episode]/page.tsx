@@ -57,16 +57,18 @@ export default async function Episode({
             <div className="flex flex-col">
               <h1 className="mt-2 content-baseline text-4xl font-bold text-slate-900">
                 {episode.title}
+              </h1>
+              <div className="order-first flex items-center gap-x-4 font-mono text-sm">
+                <FormattedDate
+                  date={date}
+                  className="leading-7 text-slate-500"
+                />
                 {episode.type === 'trailer' && (
-                  <span className="mx-2 content-baseline rounded-sm bg-gray-500 px-2 py-0.5 text-lg font-medium text-gray-50">
-                    {episode.type.toUpperCase()}
+                  <span className="relative z-10 rounded-sm bg-gray-500 px-3 py-0.5 font-medium text-gray-50">
+                    TRAILER
                   </span>
                 )}
-              </h1>
-              <FormattedDate
-                date={date}
-                className="order-first font-mono text-sm leading-7 text-slate-500"
-              />
+              </div>
             </div>
           </div>
           <p className="ml-24 mt-3 text-lg font-medium leading-8 text-slate-700">
