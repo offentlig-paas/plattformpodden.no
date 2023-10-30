@@ -41,7 +41,7 @@ function EpisodeEntry({ episode }: { episode: Episode }) {
           >
             <Link href={`/episode/${episode.id}`}>
               {episode.title}
-              {episode.type && (
+              {episode.type === 'trailer' && (
                 <span className="mx-2 rounded-sm bg-gray-500 px-2 py-0.5 text-xs font-medium text-gray-50">
                   {episode.type.toUpperCase()}
                 </span>

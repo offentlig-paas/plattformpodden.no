@@ -55,8 +55,13 @@ export default async function Episode({
               }
             />
             <div className="flex flex-col">
-              <h1 className="mt-2 text-4xl font-bold text-slate-900">
+              <h1 className="mt-2 content-baseline text-4xl font-bold text-slate-900">
                 {episode.title}
+                {episode.type === 'trailer' && (
+                  <span className="mx-2 content-baseline rounded-sm bg-gray-500 px-2 py-0.5 text-lg font-medium text-gray-50">
+                    {episode.type.toUpperCase()}
+                  </span>
+                )}
               </h1>
               <FormattedDate
                 date={date}
