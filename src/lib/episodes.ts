@@ -15,6 +15,14 @@ export interface Episode {
   }
 }
 
+function ingressFromDescription(description: string) {
+  return description.match(/<p>(.*?)<\/p>/)?.[1] || description
+}
+
+function contentFromDescription(description: string) {
+  return description.replace(/<p>(.*?)<\/p>/, "")
+}
+
 export async function getAllEpisodes() {
   let FeedSchema = object({
     items: array(
@@ -46,8 +54,8 @@ export async function getAllEpisodes() {
       type,
       title: `${id}: ${title}`,
       published: new Date(published),
-      description: description.replace(/(<([^>]+)>)/gi, ""), // Remove HTML tags
-      content,
+      description: ingressFromDescription(description),
+      content: contentFromDescription(description),
       audio: enclosures.map((enclosure) => ({
         src: enclosure.url,
         type: enclosure.type,
