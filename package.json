@@ -21,12 +21,9 @@
     "react-aria": "^3.29.1",
     "react-dom": "18.2.0",
     "react-stately": "^3.27.1",
-    "rss": "^1.2.2",
     "rss-parser": "^3.13.0",
-    "rss-to-json": "^2.1.1",
     "tailwindcss": "^3.3.5",
-    "typescript": "5.2.2",
-    "valibot": "^0.20.1"
+    "typescript": "5.2.2"
   },
   "devDependencies": {
     "@types/rss": "^0.0.32",

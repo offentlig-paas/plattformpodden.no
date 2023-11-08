@@ -1,6 +1,4 @@
-import { parse as parseFeed } from 'rss-to-json'
-import { array, number, object, parse, string } from 'valibot'
-import { episodes as items } from '../data/episodes'
+import Parser from 'rss-parser';
 
 export interface Episode {
   id: number
@@ -13,6 +11,12 @@ export interface Episode {
     src: string
     type: string
   }
+  people: {
+    name: string
+    role: string
+    href?: string
+    img?: string
+  }[]
 }
 
 function ingressFromDescription(description: string) {
@@ -23,43 +27,61 @@ function contentFromDescription(description: string) {
   return description.replace(/<p>(.*?)<\/p>/, "")
 }
 
+function translateRole(role: string) {
+  switch (role) {
+    case 'Host':
+      return 'Programleder'
+    case 'Guest':
+      return 'Gjest'
+    case 'Producer':
+      return 'Produsent'
+    default:
+      return role
+  }
+}
+
 export async function getAllEpisodes() {
-  let FeedSchema = object({
-    items: array(
-      object({
-        itunes_episode: number(),
-        itunes_episodeType: string(),
-        title: string(),
-        published: number(),
-        description: string(),
-        content: string(),
-        enclosures: array(
-          object({
-            url: string(),
-            type: string(),
-          }),
-        ),
-      }),
-    ),
-  })
+  type CustomFeed = {};
+  type CustomItem = {
+    itunes: {
+      episode: string;
+      episodeType: string;
+    }
+    persons: {
+      "_": string;
+      "$": {
+        role: string;
+        href: string;
+        img: string;
+      }
+    }[]
+  };
 
-  let feed = (await parseFeed(
-    "https://feeds.transistor.fm/plattformpodden"
-  )) as unknown
-  let items = parse(FeedSchema, feed).items
+  const parser: Parser<CustomFeed, CustomItem> = new Parser({
+    customFields: {
+      item: [['podcast:person', 'persons', {keepArray: true}]],
+    },
+  });
+  let feed = await parser.parseURL('https://feeds.transistor.fm/plattformpodden')
 
-  let episodes: Array<Episode> = items.map(
-    ({ itunes_episode: id, itunes_episodeType: type, title, description, content, enclosures, published }) => ({
-      id,
-      type,
-      title: `${id}: ${title}`,
-      published: new Date(published),
-      description: ingressFromDescription(description),
-      content: contentFromDescription(description),
-      audio: enclosures.map((enclosure) => ({
-        src: enclosure.url,
-        type: enclosure.type,
-      }))[0],
+  let episodes: Array<Episode> = feed.items.map(
+    ({ title, pubDate, content, enclosure, persons, itunes: { episode, episodeType } }) => ({
+      id: Number(episode),
+      type: episodeType || 'full',
+      title: `${episode}: ${title}`,
+      published: new Date(pubDate || 0),
+      description: ingressFromDescription(content || ""),
+      content: contentFromDescription(content || ""),
+      audio: {
+        src: enclosure?.url || "",
+        type: enclosure?.type || "",
+      },
+      people: persons?.map(({ _: name, $: { role, href, img } }) => ({
+        name,
+        role: translateRole(role),
+        href,
+        img,
+      })) || [],
     }),
   )
 
