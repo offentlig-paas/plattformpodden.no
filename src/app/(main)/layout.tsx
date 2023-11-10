@@ -82,7 +82,7 @@ export default function MainLayout({
             <div className="h-px bg-gradient-to-r from-slate-200/0 via-slate-200 to-slate-200/0 lg:hidden" />
             <ul
               role="list"
-              className="mt-4 flex justify-center gap-10 text-base font-medium leading-7 text-slate-700 sm:gap-8 lg:flex-col lg:gap-4"
+              className="mt-4 flex justify-center gap-8 text-base font-medium leading-7 text-slate-700 md:gap-16 lg:flex-col lg:gap-4"
             >
               {(
                 [
