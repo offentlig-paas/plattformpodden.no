@@ -1,4 +1,5 @@
 import { type Metadata } from 'next'
+import { Analytics } from '@vercel/analytics/react'
 import getConfig from 'next/config'
 
 import '@/styles/tailwind.css'
@@ -33,6 +34,7 @@ export default function RootLayout({
       </head>
       <body className="flex min-h-full">
         <div className="w-full">{children}</div>
+        <Analytics />
       </body>
     </html>
   )
