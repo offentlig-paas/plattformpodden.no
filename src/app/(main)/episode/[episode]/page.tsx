@@ -7,6 +7,7 @@ import { FormattedDate } from '@/components/FormattedDate'
 import { PauseIcon } from '@/components/PauseIcon'
 import { PlayIcon } from '@/components/PlayIcon'
 import { getAllEpisodes } from '@/lib/episodes'
+import { Metadata } from 'next'
 
 const getEpisode = cache(async (id: string) => {
   let allEpisodes = await getAllEpisodes()
@@ -28,6 +29,7 @@ export async function generateMetadata({
 
   return {
     title: episode.title,
+    description: episode.description,
   }
 }
 
