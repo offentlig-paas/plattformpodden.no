@@ -9,9 +9,9 @@ import { PlayIcon } from '@/components/PlayIcon'
 import { getAllEpisodes } from '@/lib/episodes'
 import { Metadata } from 'next'
 
-const getEpisode = cache(async (id: string) => {
+const getEpisode = cache(async (season: string, id: string) => {
   let allEpisodes = await getAllEpisodes()
-  let episode = allEpisodes.find((episode) => episode.id.toString() === id)
+  let episode = allEpisodes.find((episode) => episode.season.toString() === season && episode.id.toString() === id)
 
   if (!episode) {
     notFound()
@@ -23,9 +23,9 @@ const getEpisode = cache(async (id: string) => {
 export async function generateMetadata({
   params,
 }: {
-  params: { episode: string }
+  params: { season: string, episode: string }
 }) {
-  let episode = await getEpisode(params.episode)
+  let episode = await getEpisode(params.season, params.episode)
 
   return {
     title: episode.title,
@@ -38,7 +38,7 @@ export default async function Episode({
 }: {
   params: { episode: string }
 }) {
-  let episode = await getEpisode(params.episode)
+  let episode = await getEpisode('1', params.episode)
   let date = new Date(episode.published)
 
   return (

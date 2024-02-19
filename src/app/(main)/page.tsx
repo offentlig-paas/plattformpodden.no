@@ -30,16 +30,16 @@ function EpisodeEntry({ episode }: { episode: Episode }) {
 
   return (
     <article
-      aria-labelledby={`episode-${episode.id}-title`}
+      aria-labelledby={`episode-${episode.season}-${episode.id}-title`}
       className="py-10 sm:py-12"
     >
       <Container>
         <div className="flex flex-col items-start">
           <h2
-            id={`episode-${episode.id}-title`}
+            id={`episode-${episode.season}-${episode.id}-title`}
             className="mt-2 text-lg font-bold text-slate-900"
           >
-            <Link href={`/episode/${episode.id}`}>{episode.title}</Link>
+            <Link href={`/episode/${episode.season}/${episode.id}`}>{episode.title}</Link>
           </h2>
           <div className="order-first flex items-center gap-x-4 font-mono text-sm">
             <FormattedDate date={date} className="leading-7 text-slate-500" />
@@ -76,7 +76,7 @@ function EpisodeEntry({ episode }: { episode: Episode }) {
               /
             </span>
             <Link
-              href={`/episode/${episode.id}`}
+              href={`/episode/${episode.season}/${episode.id}`}
               className="flex items-center text-sm font-bold leading-6 text-pink-500 hover:text-pink-700 active:text-pink-900"
               aria-label={`Vis notater for episode ${episode.title}`}
             >
@@ -101,7 +101,7 @@ export default async function Home() {
       </Container>
       <div className="divide-y divide-slate-100 sm:mt-4 lg:mt-8 lg:border-t lg:border-slate-100">
         {episodes.map((episode) => (
-          <EpisodeEntry key={episode.id} episode={episode} />
+          <EpisodeEntry key={`${episode.season}-${episode.id}`} episode={episode} />
         ))}
       </div>
     </div>

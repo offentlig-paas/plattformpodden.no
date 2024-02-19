@@ -1,6 +1,7 @@
 import Parser from 'rss-parser';
 
 export interface Episode {
+  season: number
   id: number
   type: string
   title: string
@@ -44,6 +45,7 @@ export async function getAllEpisodes() {
   type CustomFeed = {};
   type CustomItem = {
     itunes: {
+      season: string;
       episode: string;
       episodeType: string;
     }
@@ -59,14 +61,15 @@ export async function getAllEpisodes() {
 
   const parser: Parser<CustomFeed, CustomItem> = new Parser({
     customFields: {
-      item: [['podcast:person', 'persons', {keepArray: true}]],
+      item: [['podcast:person', 'persons', { keepArray: true }]],
     },
   });
   let feed = await parser.parseURL('https://feeds.transistor.fm/plattformpodden')
 
   let episodes: Array<Episode> = feed.items.map(
-    ({ title, pubDate, content, enclosure, persons, itunes: { episode, episodeType } }) => ({
+    ({ title, pubDate, content, enclosure, persons, itunes: { season, episode, episodeType } }) => ({
       id: Number(episode),
+      season: Number(season) || 0,
       type: episodeType || 'full',
       title: `${episode}: ${title}`,
       published: new Date(pubDate || 0),
