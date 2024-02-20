@@ -36,9 +36,9 @@ export async function generateMetadata({
 export default async function Episode({
   params,
 }: {
-  params: { episode: string }
+  params: { season: string, episode: string }
 }) {
-  let episode = await getEpisode('1', params.episode)
+  let episode = await getEpisode(params.season, params.episode)
   let date = new Date(episode.published)
 
   return (
