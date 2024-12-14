@@ -90,7 +90,7 @@ const playbackRates = [
 ]
 
 export function PlaybackRateButton({ player }: { player: PlayerAPI }) {
-  let [playbackRate, setPlaybackRate] = useState(playbackRates[0])
+  const [playbackRate, setPlaybackRate] = useState(playbackRates[0])
 
   return (
     <button
@@ -98,9 +98,9 @@ export function PlaybackRateButton({ player }: { player: PlayerAPI }) {
       className="relative flex h-6 w-6 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100 hover:text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2"
       onClick={() => {
         setPlaybackRate((rate) => {
-          let existingIdx = playbackRates.indexOf(rate)
-          let idx = (existingIdx + 1) % playbackRates.length
-          let next = playbackRates[idx]
+          const existingIdx = playbackRates.indexOf(rate)
+          const idx = (existingIdx + 1) % playbackRates.length
+          const next = playbackRates[idx]
 
           player.playbackRate(next.value)
 

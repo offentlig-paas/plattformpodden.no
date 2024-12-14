@@ -42,7 +42,7 @@ function translateRole(role: string) {
 }
 
 export async function getAllEpisodes() {
-  type CustomFeed = {};
+  type CustomFeed = object;
   type CustomItem = {
     itunes: {
       season: string;
@@ -64,9 +64,9 @@ export async function getAllEpisodes() {
       item: [['podcast:person', 'persons', { keepArray: true }]],
     },
   });
-  let feed = await parser.parseURL('https://feeds.transistor.fm/plattformpodden')
+  const feed = await parser.parseURL('https://feeds.transistor.fm/plattformpodden')
 
-  let episodes: Array<Episode> = feed.items.map(
+  const episodes: Array<Episode> = feed.items.map(
     ({ title, pubDate, content, enclosure, persons, itunes: { season, episode, episodeType } }) => ({
       id: Number(episode),
       season: Number(season) || 0,

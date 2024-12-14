@@ -9,8 +9,8 @@ function randomBetween(min: number, max: number, seed = 1) {
 }
 
 export function Waveform(props: React.ComponentPropsWithoutRef<'svg'>) {
-  let id = useId()
-  let bars = {
+  const id = useId()
+  const bars = {
     total: 100,
     width: 2,
     gap: 2,
@@ -18,7 +18,7 @@ export function Waveform(props: React.ComponentPropsWithoutRef<'svg'>) {
     maxHeight: 100,
   }
 
-  let barHeights = Array.from(
+  const barHeights = Array.from(
     { length: bars.total },
     randomBetween(bars.minHeight, bars.maxHeight),
   )

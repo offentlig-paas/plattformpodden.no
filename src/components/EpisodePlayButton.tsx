@@ -13,7 +13,7 @@ export function EpisodePlayButton({
   playing: React.ReactNode
   paused: React.ReactNode
 }) {
-  let player = useAudioPlayer(episode)
+  const player = useAudioPlayer(episode)
 
   return (
     <button

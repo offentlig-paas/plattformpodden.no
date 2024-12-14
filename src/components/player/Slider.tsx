@@ -14,14 +14,14 @@ import {
 import clsx from 'clsx'
 
 function parseTime(seconds: number) {
-  let hours = Math.floor(seconds / 3600)
-  let minutes = Math.floor((seconds - hours * 3600) / 60)
+  const hours = Math.floor(seconds / 3600)
+  const minutes = Math.floor((seconds - hours * 3600) / 60)
   seconds = seconds - hours * 3600 - minutes * 60
   return [hours, minutes, seconds]
 }
 
 function formatTime(seconds: Array<number>, totalSeconds = seconds) {
-  let totalWithoutLeadingZeroes = totalSeconds.slice(
+  const totalWithoutLeadingZeroes = totalSeconds.slice(
     totalSeconds.findIndex((x) => x !== 0),
   )
   return seconds
@@ -33,14 +33,14 @@ function formatTime(seconds: Array<number>, totalSeconds = seconds) {
 function Thumb(props: {
   index: number
   state: SliderState
-  trackRef: React.RefObject<React.ElementRef<'div'>>
+  trackRef: React.RefObject<HTMLDivElement>
   isFocusVisible: boolean
   focusProps: ReturnType<typeof useFocusRing>['focusProps']
   onChangeStart?: () => void
 }) {
-  let { state, trackRef, focusProps, isFocusVisible, index } = props
-  let inputRef = useRef<React.ElementRef<'input'>>(null)
-  let { thumbProps, inputProps } = useSliderThumb(
+  const { state, trackRef, focusProps, isFocusVisible, index } = props
+  const inputRef = useRef<React.ElementRef<'input'>>(null)
+  const { thumbProps, inputProps } = useSliderThumb(
     { index, trackRef, inputRef },
     state,
   )
@@ -80,17 +80,17 @@ function Thumb(props: {
 export function Slider(
   props: SliderStateOptions<Array<number>> & { onChangeStart?: () => void },
 ) {
-  let trackRef = useRef<React.ElementRef<'div'>>(null)
-  let state = useSliderState(props)
-  let { groupProps, trackProps, labelProps, outputProps } = useSlider(
+  const trackRef = useRef<HTMLDivElement>(null as unknown as HTMLDivElement)
+  const state = useSliderState(props)
+  const { groupProps, trackProps, labelProps, outputProps } = useSlider(
     props,
     state,
     trackRef,
   )
-  let { focusProps, isFocusVisible } = useFocusRing()
+  const { focusProps, isFocusVisible } = useFocusRing()
 
-  let currentTime = parseTime(state.getThumbValue(0))
-  let totalTime = parseTime(state.getThumbMaxValue(0))
+  const currentTime = parseTime(state.getThumbValue(0))
+  const totalTime = parseTime(state.getThumbMaxValue(0))
 
   return (
     <div
@@ -126,11 +126,10 @@ export function Slider(
             width:
               state.getThumbValue(0) === 0
                 ? 0
-                : `calc(${state.getThumbPercent(0) * 100}% - ${
-                    isFocusVisible || state.isThumbDragging(0)
-                      ? '0.3125rem'
-                      : '0.25rem'
-                  })`,
+                : `calc(${state.getThumbPercent(0) * 100}% - ${isFocusVisible || state.isThumbDragging(0)
+                  ? '0.3125rem'
+                  : '0.25rem'
+                })`,
           }}
         />
         <Thumb

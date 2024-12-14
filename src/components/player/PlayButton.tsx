@@ -3,7 +3,7 @@ import { PauseIcon } from '@/components/PauseIcon'
 import { PlayIcon } from '@/components/PlayIcon'
 
 export function PlayButton({ player }: { player: PlayerAPI }) {
-  let Icon = player.playing ? PauseIcon : PlayIcon
+  const Icon = player.playing ? PauseIcon : PlayIcon
 
   return (
     <button

@@ -62,16 +62,16 @@ function audioReducer(state: PlayerState, action: Action): PlayerState {
 }
 
 export function AudioProvider({ children }: { children: React.ReactNode }) {
-  let [state, dispatch] = useReducer(audioReducer, {
+  const [state, dispatch] = useReducer(audioReducer, {
     playing: false,
     muted: false,
     duration: 0,
     currentTime: 0,
     episode: null,
   })
-  let playerRef = useRef<React.ElementRef<'audio'>>(null)
+  const playerRef = useRef<React.ElementRef<'audio'>>(null)
 
-  let actions = useMemo<PublicPlayerActions>(() => {
+  const actions = useMemo<PublicPlayerActions>(() => {
     return {
       play(episode) {
         if (episode) {
@@ -81,7 +81,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
             playerRef.current &&
             playerRef.current.currentSrc !== episode.audio.src
           ) {
-            let playbackRate = playerRef.current.playbackRate
+            const playbackRate = playerRef.current.playbackRate
             playerRef.current.src = episode.audio.src
             playerRef.current.load()
             playerRef.current.pause()
@@ -96,7 +96,11 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
         playerRef.current?.pause()
       },
       toggle(episode) {
-        this.isPlaying(episode) ? actions.pause() : actions.play(episode)
+        if (this.isPlaying(episode)) {
+          actions.pause()
+        } else {
+          actions.play(episode)
+        }
       },
       seekBy(amount) {
         if (playerRef.current) {
@@ -124,7 +128,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     }
   }, [state.playing])
 
-  let api = useMemo<PlayerAPI>(
+  const api = useMemo<PlayerAPI>(
     () => ({ ...state, ...actions }),
     [state, actions],
   )
@@ -157,7 +161,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
 }
 
 export function useAudioPlayer(episode?: Episode) {
-  let player = useContext(AudioPlayerContext)
+  const player = useContext(AudioPlayerContext)
 
   return useMemo<PlayerAPI>(
     () => ({

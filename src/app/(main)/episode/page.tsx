@@ -1,5 +1,7 @@
 import { redirect } from 'next/navigation'
 
-export default async function Episode({}: { params: { episode: string } }) {
+type Params = Promise<{ episode: string }>;
+
+export default async function Episode({ }: { params: Params }) {
   redirect('/')
 }

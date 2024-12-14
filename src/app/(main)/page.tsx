@@ -26,7 +26,7 @@ function PlayIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
 }
 
 function EpisodeEntry({ episode }: { episode: Episode }) {
-  let date = new Date(episode.published)
+  const date = new Date(episode.published)
 
   return (
     <article
@@ -90,7 +90,7 @@ function EpisodeEntry({ episode }: { episode: Episode }) {
 }
 
 export default async function Home() {
-  let episodes = await getAllEpisodes()
+  const episodes = await getAllEpisodes()
 
   return (
     <div className="pb-12 pt-16 sm:pb-4 lg:pt-12">
@@ -100,8 +100,8 @@ export default async function Home() {
         </h1>
       </Container>
       <div className="divide-y divide-slate-100 sm:mt-4 lg:mt-8 lg:border-t lg:border-slate-100">
-        {episodes.map((episode) => (
-          <EpisodeEntry key={`${episode.season}-${episode.id}`} episode={episode} />
+        {episodes.map((episode, index) => (
+          <EpisodeEntry key={`${episode.season}-${episode.id}-${index}`} episode={episode} />
         ))}
       </div>
     </div>

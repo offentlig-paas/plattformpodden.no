@@ -12,25 +12,25 @@ import { RewindButton } from '@/components/player/RewindButton'
 import { Slider } from '@/components/player/Slider'
 
 function parseTime(seconds: number) {
-  let hours = Math.floor(seconds / 3600)
-  let minutes = Math.floor((seconds - hours * 3600) / 60)
+  const hours = Math.floor(seconds / 3600)
+  const minutes = Math.floor((seconds - hours * 3600) / 60)
   seconds = seconds - hours * 3600 - minutes * 60
   return [hours, minutes, seconds]
 }
 
 function formatHumanTime(seconds: number) {
-  let [h, m, s] = parseTime(seconds)
+  const [h, m, s] = parseTime(seconds)
   return `${h} hour${h === 1 ? '' : 's'}, ${m} minute${
     m === 1 ? '' : 's'
   }, ${s} second${s === 1 ? '' : 's'}`
 }
 
 export function AudioPlayer() {
-  let player = useAudioPlayer()
+  const player = useAudioPlayer()
 
-  let wasPlayingRef = useRef(false)
+  const wasPlayingRef = useRef(false)
 
-  let [currentTime, setCurrentTime] = useState<number | null>(
+  const [currentTime, setCurrentTime] = useState<number | null>(
     player.currentTime,
   )
 

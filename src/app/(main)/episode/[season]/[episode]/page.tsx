@@ -7,11 +7,10 @@ import { FormattedDate } from '@/components/FormattedDate'
 import { PauseIcon } from '@/components/PauseIcon'
 import { PlayIcon } from '@/components/PlayIcon'
 import { getAllEpisodes } from '@/lib/episodes'
-import { Metadata } from 'next'
 
 const getEpisode = cache(async (season: string, id: string) => {
-  let allEpisodes = await getAllEpisodes()
-  let episode = allEpisodes.find((episode) => episode.season.toString() === season && episode.id.toString() === id)
+  const allEpisodes = await getAllEpisodes()
+  const episode = allEpisodes.find((episode) => episode.season.toString() === season && episode.id.toString() === id)
 
   if (!episode) {
     notFound()
@@ -20,12 +19,11 @@ const getEpisode = cache(async (season: string, id: string) => {
   return episode
 })
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { season: string, episode: string }
-}) {
-  let episode = await getEpisode(params.season, params.episode)
+type Params = Promise<{ season: string; episode: string }>;
+
+export async function generateMetadata({ params }: { params: Params }) {
+  const resolvedParams = await params;
+  const episode = await getEpisode(resolvedParams.season, resolvedParams.episode);
 
   return {
     title: episode.title,
@@ -33,13 +31,10 @@ export async function generateMetadata({
   }
 }
 
-export default async function Episode({
-  params,
-}: {
-  params: { season: string, episode: string }
-}) {
-  let episode = await getEpisode(params.season, params.episode)
-  let date = new Date(episode.published)
+export default async function Episode({ params }: { params: Params }) {
+  const resolvedParams = await params;
+  const episode = await getEpisode(resolvedParams.season, resolvedParams.episode);
+  const date = new Date(episode.published)
 
   return (
     <article className="py-16 lg:py-36">

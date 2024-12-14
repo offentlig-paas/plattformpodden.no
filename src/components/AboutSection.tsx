@@ -11,7 +11,7 @@ export interface AboutSectionProps
 }
 
 export function AboutSection({ description, ...props }: AboutSectionProps) {
-  let [isExpanded, setIsExpanded] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(false)
 
   return (
     <section {...props}>
