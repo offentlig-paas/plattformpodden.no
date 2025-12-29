@@ -1,10 +1,8 @@
 import { type Metadata } from 'next'
 import { Analytics } from '@vercel/analytics/react'
-import getConfig from 'next/config'
 
 import '@/styles/tailwind.css'
-
-const { publicRuntimeConfig: c } = getConfig()
+import { siteConfig as c } from '@/lib/config'
 
 export const metadata: Metadata = {
   title: {

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import Link from 'next/link'
 
 import { useAudioPlayer } from '@/components/AudioProvider'
@@ -20,9 +20,8 @@ function parseTime(seconds: number) {
 
 function formatHumanTime(seconds: number) {
   const [h, m, s] = parseTime(seconds)
-  return `${h} hour${h === 1 ? '' : 's'}, ${m} minute${
-    m === 1 ? '' : 's'
-  }, ${s} second${s === 1 ? '' : 's'}`
+  return `${h} hour${h === 1 ? '' : 's'}, ${m} minute${m === 1 ? '' : 's'
+    }, ${s} second${s === 1 ? '' : 's'}`
 }
 
 export function AudioPlayer() {
@@ -30,13 +29,7 @@ export function AudioPlayer() {
 
   const wasPlayingRef = useRef(false)
 
-  const [currentTime, setCurrentTime] = useState<number | null>(
-    player.currentTime,
-  )
-
-  useEffect(() => {
-    setCurrentTime(null)
-  }, [player.currentTime])
+  const [currentTime, setCurrentTime] = useState<number | null>(null)
 
   if (!player.episode) {
     return null

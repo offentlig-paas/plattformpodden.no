@@ -1,5 +1,6 @@
 import { cache } from 'react'
 import { notFound } from 'next/navigation'
+import Image from 'next/image'
 
 import { Container } from '@/components/Container'
 import { EpisodePlayButton } from '@/components/EpisodePlayButton'
@@ -86,10 +87,12 @@ export default async function Episode({ params }: { params: Params }) {
             <a href={person.href} className="group" key={person.name}>
               <li key={person.name}>
                 <div className="flex items-center gap-x-6">
-                  <img
+                  <Image
                     className="h-16 w-16 rounded-full"
-                    src={person.img}
+                    src={person.img || '/placeholder.png'}
                     alt=""
+                    width={64}
+                    height={64}
                   />
                   <div>
                     <h3 className="text-base font-semibold leading-7 tracking-tight text-gray-900">

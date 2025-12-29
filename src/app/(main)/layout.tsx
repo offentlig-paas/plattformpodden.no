@@ -1,7 +1,6 @@
 import { Fragment } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import getConfig from 'next/config'
 
 import { AboutSection } from '@/components/AboutSection'
 import { AudioProvider } from '@/components/AudioProvider'
@@ -18,8 +17,7 @@ import {
   RSSIcon,
   SpotifyIcon,
 } from '@/components/ProviderIcons'
-
-const { publicRuntimeConfig: c } = getConfig()
+import { siteConfig as c } from '@/lib/config'
 
 export default function MainLayout({
   children,
