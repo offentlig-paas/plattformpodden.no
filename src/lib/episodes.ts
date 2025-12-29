@@ -1,4 +1,6 @@
 import Parser from 'rss-parser';
+import { cache } from 'react';
+import { unstable_cache } from 'next/cache';
 
 export interface Episode {
   season: number
@@ -41,52 +43,61 @@ function translateRole(role: string) {
   }
 }
 
-export async function getAllEpisodes() {
-  type CustomFeed = object;
-  type CustomItem = {
-    itunes: {
-      season: string;
-      episode: string;
-      episodeType: string;
-    }
-    persons: {
-      "_": string;
-      "$": {
-        role: string;
-        href: string;
-        img: string;
-      }
-    }[]
-  };
+export const getAllEpisodes = cache(async () => {
+  return unstable_cache(
+    async () => {
+      type CustomFeed = object;
+      type CustomItem = {
+        itunes: {
+          season: string;
+          episode: string;
+          episodeType: string;
+        }
+        persons: {
+          "_": string;
+          "$": {
+            role: string;
+            href: string;
+            img: string;
+          }
+        }[]
+      };
 
-  const parser: Parser<CustomFeed, CustomItem> = new Parser({
-    customFields: {
-      item: [['podcast:person', 'persons', { keepArray: true }]],
+      const parser: Parser<CustomFeed, CustomItem> = new Parser({
+        customFields: {
+          item: [['podcast:person', 'persons', { keepArray: true }]],
+        },
+      });
+      const feed = await parser.parseURL('https://feeds.transistor.fm/plattformpodden')
+
+      const episodes: Array<Episode> = feed.items.map(
+        ({ title, pubDate, content, enclosure, persons, itunes: { season, episode, episodeType } }) => ({
+          id: Number(episode),
+          season: Number(season) || 0,
+          type: episodeType || 'full',
+          title: `${episode}: ${title}`,
+          published: new Date(pubDate || 0),
+          description: ingressFromDescription(content || ""),
+          content: contentFromDescription(content || ""),
+          audio: {
+            src: enclosure?.url || "",
+            type: enclosure?.type || "",
+          },
+          people: persons?.map(({ _: name, $: { role, href, img } }) => ({
+            name,
+            role: translateRole(role),
+            href,
+            img,
+          })) || [],
+        }),
+      )
+
+      return episodes
     },
-  });
-  const feed = await parser.parseURL('https://feeds.transistor.fm/plattformpodden')
-
-  const episodes: Array<Episode> = feed.items.map(
-    ({ title, pubDate, content, enclosure, persons, itunes: { season, episode, episodeType } }) => ({
-      id: Number(episode),
-      season: Number(season) || 0,
-      type: episodeType || 'full',
-      title: `${episode}: ${title}`,
-      published: new Date(pubDate || 0),
-      description: ingressFromDescription(content || ""),
-      content: contentFromDescription(content || ""),
-      audio: {
-        src: enclosure?.url || "",
-        type: enclosure?.type || "",
-      },
-      people: persons?.map(({ _: name, $: { role, href, img } }) => ({
-        name,
-        role: translateRole(role),
-        href,
-        img,
-      })) || [],
-    }),
-  )
-
-  return episodes
-}
+    ['episodes'],
+    {
+      revalidate: 60, // Revalidate every 60 seconds
+      tags: ['podcast-episodes']
+    }
+  )()
+})
