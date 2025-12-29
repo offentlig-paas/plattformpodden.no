@@ -9,6 +9,16 @@ const nextConfig = {
       expire: 3600, // Expire after 1 hour
     },
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'img.transistor.fm',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+  },
 }
 
 module.exports = nextConfig
